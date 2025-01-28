@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Akt provider="webakt">
+  <cashboxes>
+    <cashbox name="709011" host="10.176.18.238" />
+    <cashbox name="709012" host="10.176.18.239" />
+  </cashboxes>
+</Akt>
