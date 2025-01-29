@@ -14,6 +14,7 @@ namespace ConsoleApp2.data
 
             Directory.CreateDirectory(outputDir);
 
+//vllt folgendes entfernen(damit die nicht null sind)
             int? lastMuenzbetrag1 = null;
             int? lastMuenzbetrag2 = null;
             string modifiedCashboxId1 = null;
@@ -54,6 +55,8 @@ namespace ConsoleApp2.data
                         WriteMuenzbetrag(writer, lastMuenzbetrag1, modifiedCashboxId1);
                         WriteMuenzbetrag(writer, lastMuenzbetrag2, modifiedCashboxId2);
                     }
+
+//als if nach oben verschieben 
                     else
                     {
                         writer.WriteLine("Die Logdatei wurde nicht gefunden.");
