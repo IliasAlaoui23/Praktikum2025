@@ -1,12 +1,23 @@
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System;
+
 namespace ConsoleApp2.data
+
 {
     class Program
     {
         static void Main()
         {
-            string logFilePath = @"C:\Users\ialaouik\AppData\Roaming\JetBrains\Rider2024.3\extensions\com.intellij.database\data\api_Carbon.Application.WinForm.Fux (1).log";
+            Console.WriteLine("Drücke Enter, um zu starten...");
+            Console.ReadLine();
+            StartCode();
+        }
+
+        static void StartCode()
+        {
+            string logFilePath =
+                @"C:\Users\ialaouik\AppData\Roaming\JetBrains\Rider2024.3\extensions\com.intellij.database\data\api_Carbon.Application.WinForm.Fux (1).log";
             string xmlFilePath = @"C:\Users\ialaouik\RiderProjects\ConsoleApp2\ConsoleApp2\data\CrConfig (1).xml";
             string outputDir = @"../../../data";
             string outputFile = Path.Combine(outputDir, "Muenzbetrag.txt");
@@ -19,8 +30,8 @@ namespace ConsoleApp2.data
                 {
                     if (File.Exists(logFilePath))
                     {
-                       Console.WriteLine("Das aktuelle Verzeichnis: " + Directory.GetCurrentDirectory());
-                       Console.WriteLine("Der Pfad " + logFilePath + ": " + File.Exists(logFilePath));
+                        Console.WriteLine("Das aktuelle Verzeichnis: " + Directory.GetCurrentDirectory());
+                        Console.WriteLine("Der Pfad " + logFilePath + ": " + File.Exists(logFilePath));
 
                         string[] content = File.ReadAllLines(logFilePath);
                         foreach (string line in content)
@@ -34,10 +45,11 @@ namespace ConsoleApp2.data
                                 }
                                 else if (line.Contains("70019012"))
                                 {
-                                    lastMuenzbetrag70019012 = muenzbetrag; 
+                                    lastMuenzbetrag70019012 = muenzbetrag;
                                 }
                             }
                         }
+
                         // Ausgabe der Münzbeträge
                         WriteMuenzbetrag(writer, lastMuenzbetrag70019011, "70019011");
                         WriteMuenzbetrag(writer, lastMuenzbetrag70019012, "70019012");
@@ -46,6 +58,7 @@ namespace ConsoleApp2.data
                     {
                         writer.WriteLine("Die Datei wurde nicht gefunden.");
                     }
+
                     // XML-Datei auslesen
                     if (File.Exists(xmlFilePath))
                     {
@@ -55,6 +68,7 @@ namespace ConsoleApp2.data
                     {
                         writer.WriteLine("Die XML-Datei wurde nicht gefunden.");
                     }
+
                     writer.WriteLine("Münzbetrag der beiden Cashrecycler aktualisiert. ");
                 }
             }
@@ -62,9 +76,11 @@ namespace ConsoleApp2.data
             {
                 Console.WriteLine("Fehler: " + ex.Message);
             }
+
             Console.WriteLine("Code wird ausgeführt: " + DateTime.Now);
-            Console.ReadLine(); 
+            Console.ReadLine();
         }
+
         private static void WriteMuenzbetrag(StreamWriter writer, int? muenzbetrag, string cashboxId)
         {
             if (muenzbetrag.HasValue)
@@ -78,6 +94,7 @@ namespace ConsoleApp2.data
                 writer.WriteLine($"Keine Zeilen mit 'TotalValueCoins' für {cashboxId} gefunden.");
             }
         }
+
         private static void ReadCashboxesFromXml(StreamWriter writer, string xmlFilePath)
         {
             XDocument xmlDoc = XDocument.Load(xmlFilePath);
@@ -88,6 +105,7 @@ namespace ConsoleApp2.data
                 writer.WriteLine($"Cashbox Name: {name}, Host: {host}");
             }
         }
+
         private static bool ExtractWithRegularExpression(string line, out int muenzbetrag)
         {
             muenzbetrag = 0;
@@ -97,6 +115,7 @@ namespace ConsoleApp2.data
             {
                 return false;
             }
+
             var totalValueString = match.Groups[1].Value;
             var success = int.TryParse(totalValueString, out int result);
             if (!success)
@@ -104,9 +123,9 @@ namespace ConsoleApp2.data
                 Console.WriteLine($"Der Wert {totalValueString} konnte nicht geparst werden.");
                 return false;
             }
+
             muenzbetrag = result;
             return true;
-
         }
     }
 }
